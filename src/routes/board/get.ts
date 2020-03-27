@@ -14,7 +14,7 @@ export const get_board = async (req : express.Request , res : express.Response) 
                     where: { pk }
                 })
                 .catch(err => {
-                    res.status(500).json({ success: false, err });
+                    res.status(500).json({ success: false });
                 });
                 if(board){
                     res.status(200).json({ success: true, board });
