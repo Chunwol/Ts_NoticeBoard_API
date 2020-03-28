@@ -3,11 +3,11 @@ import {Comment} from '../../../database/models/Comment';
 import * as express from "express";
 
 export const get_board = async (req : express.Request , res : express.Response) => {
-    const { type } = req.body
+    const { type } : any = req.body
     
     switch(type){
         case "post":
-            const { pk } = req.params;
+            const { pk } : any = req.params;
             if(pk){
                 const board : any = await Board.findOne<Board>({
                     include: [{ model: Comment}],

@@ -5,13 +5,13 @@ import 'dotenv/config'
 const env = process.env;
 
 export const post_comment = (req : express.Request , res : express.Response) => {
-    const { pk : board_pk } = req.params;
-    const { token } = req.headers;
-    const { content } = req.body;
+    const { pk : board_pk } : any = req.params;
+    const { token } : any = req.headers;
+    const { content } : any = req.body;
     if(content && token){
-        verify(token, env.TOKEN_SECRET, async (err, decoded) => {
+        verify(token, env.TOKEN_SECRET, async (err : string, decoded : string) => {
             if (err == null) {
-                const { pk : user_pk } = decoded;
+                const { pk : user_pk } : any = decoded;
                 const comment : any = await Comment.create<Comment>({
                     board_pk,
                     user_pk,

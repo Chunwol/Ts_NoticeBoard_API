@@ -4,7 +4,7 @@ import * as express from "express";
 import 'dotenv/config'
 const env = process.env;
 export const login = async (req : express.Request , res : express.Response) => {
-  const { id, password } = req.body;
+  const { id, password } : any = req.body;
   if(id && password){
     const user : any = await User.findOne<User>({
       where: {

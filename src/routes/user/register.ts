@@ -2,7 +2,7 @@ import {User} from '../../../database/models/User';
 import * as express from "express";
 
 export const register = async (req : express.Request , res : express.Response) => {
-  const { id, password, name } = req.body;
+  const { id, password, name } : any = req.body;
   if(id && password && name){
     const user : any = await User.create<User>({
       id,
