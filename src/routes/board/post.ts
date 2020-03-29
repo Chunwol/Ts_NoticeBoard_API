@@ -1,5 +1,5 @@
 import { verify } from 'jsonwebtoken';
-import {Board} from '../../../database/models/Board';
+import Board from '../../../database/models/Board';
 import * as express from "express";
 import 'dotenv/config'
 const env = process.env;

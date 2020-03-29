@@ -1,5 +1,5 @@
 import { sign } from 'jsonwebtoken';
-import {User} from '../../../database/models/User';
+import User from '../../../database/models/User';
 import * as express from "express";
 import 'dotenv/config'
 const env = process.env;

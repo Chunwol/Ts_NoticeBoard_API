@@ -1,44 +1,39 @@
+import { Model, DataTypes } from 'sequelize';
 
-import {Table, Column, Model, BelongsTo, DataType} from 'sequelize-typescript';
-import { User } from './User';
-import { Board } from './Board';
-@Table
-export class Comment extends Model<Comment> {
+import sequelize from '../index';
 
-  @Column({
+class Comment extends Model {
+  public pk!: number;
+  public board_pk!: string;
+  public user_pk!: string;
+  public content!: string;
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
+}
+
+Comment.init({
+  pk: {
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
-    type: DataType.INTEGER
-  }) public pk: string;
-
-  @Column({
-    type: DataType.INTEGER,
-    allowNull: false,
-  }) public board_pk: string;
-
-  @Column({
-    type: DataType.UUID,
-    allowNull: false,
-  }) public user_pk: string;
-
-  @Column({
-    type: DataType.STRING(300),
+    type: DataTypes.INTEGER
+  },
+  board_pk: {
+    type: DataTypes.INTEGER,
     allowNull: false
-  }) public content: string;
+  },
+  user_pk: {
+    type: DataTypes.UUID,
+    allowNull: false,
+  },
+  content: {
+    type: DataTypes.STRING(300),
+    allowNull: false
+  }
+}, {
+  tableName: 'comments',
+  sequelize: sequelize,
+  timestamps : true
+});
 
-  @BelongsTo(
-    () => Board,
-    {
-      foreignKey: "board_pk"
-    }
-  ) public Board: Board[]; 
-  
-  @BelongsTo(
-    () => User,
-    {
-      foreignKey: "user_pk"
-    }
-  ) public User: User[]; 
-}
-
+export default Comment;

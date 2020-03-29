@@ -1,5 +1,5 @@
-import {Board} from '../../../database/models/Board';
-import {Comment} from '../../../database/models/Comment';
+import Board from '../../../database/models/Board';
+import Comment from '../../../database/models/Comment';
 import * as express from "express";
 
 export const get_board = async (req : express.Request , res : express.Response) => {
@@ -10,11 +10,11 @@ export const get_board = async (req : express.Request , res : express.Response) 
             const { pk } : any = req.params;
             if(pk){
                 const board : any = await Board.findOne<Board>({
-                    include: [{ model: Comment}],
+                    include: [ Board.associations.comments ],
                     where: { pk }
                 })
                 .catch(err => {
-                    res.status(500).json({ success: false });
+                    res.status(500).json({ success: false, err });
                 });
                 if(board){
                     res.status(200).json({ success: true, board });

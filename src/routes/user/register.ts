@@ -1,4 +1,4 @@
-import {User} from '../../../database/models/User';
+import User from '../../../database/models/User';
 import * as express from "express";
 
 export const register = async (req : express.Request , res : express.Response) => {

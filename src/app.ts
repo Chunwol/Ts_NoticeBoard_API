@@ -2,7 +2,7 @@ import * as express from "express";
 import * as path from "path";
 import * as logger from "morgan";
 import indexRouter from './routes/index'
-import {sequelize} from '../database/index'
+import sequelize from '../database/index'
 class App {
   public application : express.Application;
   constructor(){

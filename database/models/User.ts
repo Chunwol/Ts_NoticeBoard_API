@@ -1,46 +1,63 @@
 
-import {Table, Column, Model, HasMany, DataType} from 'sequelize-typescript'
-import { Board } from './Board';
-import { Comment } from './Comment'
-@Table
-export class User extends Model<User> {
+import { Model, Association, DataTypes } from 'sequelize';
 
-  @Column({
-    type: DataType.UUID,
-    defaultValue: DataType.UUIDV4,
+import sequelize from '../index';
+import Board from './Board';
+import Comment from './Comment'
+
+class User extends Model {
+  public pk!: string;
+  public id!: string;
+  public password!: string;
+  public name!: string;
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
+
+  public static associations: {
+    boards: Association<User, Board>;
+    comments: Association<User, Comment>;
+  };
+
+  public readonly boards?: Board[];
+  public readonly comments?: Comment[];
+}
+
+User.init({
+  pk: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
     allowNull: false,
     unique: true,
     primaryKey: true
-  }) public pk: string;
-
-  @Column({
-    type: DataType.STRING(20),
+  },
+  id: {
+    type: DataTypes.STRING(20),
     allowNull: false,
     unique: true
-  }) public id: string;
-
-  @Column({
-    type: DataType.STRING(50),
+  },
+  password: {
+    type: DataTypes.STRING(50),
     allowNull: false
-  }) public password: string;
-
-  @Column({
-    type: DataType.STRING(10),
+  },
+  name: {
+    type: DataTypes.STRING(10),
     allowNull: false
-  }) public name: string;
+  }
+}, {
+  tableName: 'users',
+  sequelize: sequelize,
+  timestamps : true
+});
 
-  @HasMany(
-    () => Board,
-    {
-      foreignKey: "user_pk"
-    }
-  ) public Board: Board[];
+User.hasMany(Board, {
+  foreignKey: "user_pk",
+  sourceKey: "pk",
+  as: 'boards'
+});
+User.hasMany(Comment, {
+  foreignKey: "user_pk",
+  sourceKey: "pk",
+  as: 'comments'
+});
 
-  @HasMany(
-    () => Comment,
-    {
-      foreignKey: "user_pk"
-    }
-  ) public Comment: Comment[];
-}
-
+export default User;

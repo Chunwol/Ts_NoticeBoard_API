@@ -11,7 +11,7 @@ interface DatabaseConfig {
 exports.development =  <DatabaseConfig>{
   "username": env.DB_ID,
   "password": env.DB_PW,
-  "database": "project9",
+  "database": "project10",
   "host": "127.0.0.1",
   "dialect": "mysql",
   "operatorsAliases": false
