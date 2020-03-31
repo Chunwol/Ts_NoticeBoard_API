@@ -1,18 +1,20 @@
 import { verify } from 'jsonwebtoken';
 import Comment from '../../../database/models/Comment';
-import * as express from "express";
+import Decoded from '../decoded/decoded';
+import { Request, Response } from "express-serve-static-core";
 import 'dotenv/config'
 const env = process.env;
 
-export const post_comment = (req : express.Request , res : express.Response) => {
-    const { pk : board_pk } : any = req.params;
-    const { token } : any = req.headers;
-    const { content } : any = req.body;
+export const post_comment = (req : Request , res : Response) => {
+    const board_pk : string = req.params.pk;
+    const content : string = req.body.content;
+    const token : string | string[] = req.headers.token;
+    
     if(content && token){
-        verify(token, env.TOKEN_SECRET, async (err : string, decoded : string) => {
+        verify(token, env.TOKEN_SECRET, async (err : string, decoded : Decoded) => {
             if (err == null) {
-                const { pk : user_pk } : any = decoded;
-                const comment : any = await Comment.create<Comment>({
+                const user_pk : string = decoded.pk;
+                const comment : void | Comment = await Comment.create<Comment>({
                     board_pk,
                     user_pk,
                     content

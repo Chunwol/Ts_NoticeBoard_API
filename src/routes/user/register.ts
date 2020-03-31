@@ -1,10 +1,13 @@
 import User from '../../../database/models/User';
-import * as express from "express";
+import { Request, Response } from "express-serve-static-core";
 
-export const register = async (req : express.Request , res : express.Response) => {
-  const { id, password, name } : any = req.body;
+export const register = async (req : Request , res : Response) => {
+  const id : string = req.body.id;
+  const password : string = req.body.password;
+  const name : string = req.body.name;
+  
   if(id && password && name){
-    const user : any = await User.create<User>({
+    const user : void | User = await User.create<User>({
       id,
       password,
       name

@@ -1,12 +1,15 @@
 import { sign } from 'jsonwebtoken';
 import User from '../../../database/models/User';
-import * as express from "express";
+import { Request, Response } from "express-serve-static-core";
 import 'dotenv/config'
 const env = process.env;
-export const login = async (req : express.Request , res : express.Response) => {
-  const { id, password } : any = req.body;
+
+export const login = async (req : Request , res : Response) => {
+  const id : string = req.body.id;
+  const password : string = req.body.password;
+
   if(id && password){
-    const user : any = await User.findOne<User>({
+    const user : void | User = await User.findOne<User>({
       where: {
         id,
         password

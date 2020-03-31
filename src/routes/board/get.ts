@@ -1,20 +1,19 @@
 import Board from '../../../database/models/Board';
-import Comment from '../../../database/models/Comment';
-import * as express from "express";
+import { Request, Response } from "express-serve-static-core";
 
-export const get_board = async (req : express.Request , res : express.Response) => {
-    const { type } : any = req.body
+export const get_board = async (req : Request , res : Response) => {
+    const type : string = req.body.type;
     
     switch(type){
         case "post":
-            const { pk } : any = req.params;
+            const pk : string = req.params.pk;
             if(pk){
-                const board : any = await Board.findOne<Board>({
+                const board : void | Board = await Board.findOne<Board>({
                     include: [ Board.associations.comments ],
                     where: { pk }
                 })
                 .catch(err => {
-                    res.status(500).json({ success: false, err });
+                    res.status(500).json({ success: false });
                 });
                 if(board){
                     res.status(200).json({ success: true, board });
@@ -27,7 +26,7 @@ export const get_board = async (req : express.Request , res : express.Response) 
             break;
 
         case "list":
-            const board : any = await Board.findAll<Board>()
+            const board : void | Board[] = await Board.findAll<Board>()
             .catch(err => {
                 res.status(500).json({ success: false });
             });
