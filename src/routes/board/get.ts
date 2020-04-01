@@ -1,5 +1,6 @@
 import Board from '../../../database/models/Board';
 import { Request, Response } from "express-serve-static-core";
+import Comment from '../../../database/models/Comment';
 
 export const get_board = async (req : Request , res : Response) => {
     const type : string = req.body.type;
@@ -9,11 +10,11 @@ export const get_board = async (req : Request , res : Response) => {
             const pk : string = req.params.pk;
             if(pk){
                 const board : void | Board = await Board.findOne<Board>({
-                    include: [ Board.associations.comments ],
+                    include: [ {model:Comment} ],
                     where: { pk }
                 })
                 .catch(err => {
-                    res.status(500).json({ success: false });
+                    res.status(500).json({ success: false,err });
                 });
                 if(board){
                     res.status(200).json({ success: true, board });

@@ -1,4 +1,4 @@
-import { Model, Association, DataTypes } from 'sequelize';
+import { Model, DataTypes } from 'sequelize';
 import sequelize from '../index';
 import Comment from './Comment'
 
@@ -10,11 +10,7 @@ class Board extends Model {
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  public static associations: {
-    comments: Association<Board, Comment>;
-  };
   public readonly comments?: Comment[];
-
 }
 Board.init({
   pk: {
@@ -42,9 +38,12 @@ Board.init({
 });
 
 Board.hasMany(Comment, {
-  foreignKey: "board_pk",
-  sourceKey: "pk",
-  as: 'comments'
+  foreignKey: 'board_pk',
+  sourceKey: 'pk'
 });
 
+Comment.belongsTo(Board, {
+  foreignKey: 'board_pk',
+  targetKey: 'pk'
+});
 export default Board;

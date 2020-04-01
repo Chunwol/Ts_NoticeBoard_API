@@ -1,5 +1,4 @@
 import { Model, DataTypes } from 'sequelize';
-
 import sequelize from '../index';
 
 class Comment extends Model {
@@ -24,7 +23,7 @@ Comment.init({
   },
   user_pk: {
     type: DataTypes.UUID,
-    allowNull: false,
+    allowNull: false
   },
   content: {
     type: DataTypes.STRING(300),
@@ -35,5 +34,6 @@ Comment.init({
   sequelize: sequelize,
   timestamps : true
 });
+
 
 export default Comment;
