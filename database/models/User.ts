@@ -1,5 +1,4 @@
-import { Model, DataTypes } from 'sequelize';
-import sequelize from '../index';
+import { Model, DataTypes, Sequelize } from 'sequelize';
 import Board from './Board';
 import Comment from './Comment'
 
@@ -15,49 +14,44 @@ class User extends Model {
   public readonly comments?: Comment[];
 }
 
-User.init({
-  pk: {
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
-    allowNull: false,
-    unique: true,
-    primaryKey: true
-  },
-  id: {
-    type: DataTypes.STRING(20),
-    allowNull: false,
-    unique: true
-  },
-  password: {
-    type: DataTypes.STRING(50),
-    allowNull: false
-  },
-  name: {
-    type: DataTypes.STRING(10),
-    allowNull: false
-  }
-}, {
-  tableName: 'users',
-  sequelize: sequelize,
-  timestamps : true
-});
+export const initUser = (sequelize: Sequelize) => {
+  User.init({
+    pk: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      unique: true,
+      primaryKey: true
+    },
+    id: {
+      type: DataTypes.STRING(20),
+      allowNull: false,
+      unique: true
+    },
+    password: {
+      type: DataTypes.STRING(50),
+      allowNull: false
+    },
+    name: {
+      type: DataTypes.STRING(10),
+      allowNull: false
+    }
+  }, {
+    tableName: 'users',
+    sequelize: sequelize,
+    timestamps : true
+  });
+}
 
-User.hasMany(Board, {
-  foreignKey: "user_pk",
-  sourceKey: "pk",
-});
-User.hasMany(Comment, {
-  foreignKey: "user_pk",
-  sourceKey: "pk"
-});
-
-Board.belongsTo(User, {
-  foreignKey: 'user_pk',
-  targetKey: 'pk'
-});
-Comment.belongsTo(User, {
-  foreignKey: 'user_pk',
-  targetKey: 'pk'
-});
+export function associateUser(): void {
+  User.hasMany(Board, {
+    foreignKey: "user_pk",
+    sourceKey: "pk",
+  });
+  User.hasMany(Comment, {
+    foreignKey: "user_pk",
+    sourceKey: "pk"
+  });
+}
 
 export default User;
