@@ -10,7 +10,7 @@ interface Decoded {
 
 const userPk = async (token : string | string[]) => {
     if(token){
-        return verify(token, env.TOKEN_SECRET, async (err : string, decoded : Decoded) => {
+        return await verify(token, env.TOKEN_SECRET, async (err : string, decoded : Decoded) => {
             if (err == null) {
                 const pk : string = decoded.pk;
                 const user : number = await User.count({ 
