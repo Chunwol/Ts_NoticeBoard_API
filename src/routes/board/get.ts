@@ -7,7 +7,7 @@ export const get_board = async (req : Request , res : Response) => {
     const type : string = req.body.type;
     const token : string | string[] = req.headers.token;
     const user_pk : string = await userPk(token);
-    console.log(user_pk);
+    
     if(user_pk != null){
         switch(type){
             case "post":
