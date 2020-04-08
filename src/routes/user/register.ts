@@ -1,5 +1,5 @@
 import User from '../../../database/models/User';
-import { Request, Response } from "express-serve-static-core";
+import { Request, Response } from "express";
 
 export const register = async (req : Request , res : Response) => {
   const id : string = req.body.id;
